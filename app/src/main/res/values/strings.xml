@@ -1,0 +1,41 @@
+<resources>
+    <string name="app_name">Safe Limit Calculator</string>
+    <string name="no_expenses_today">No expenses today</string>
+    <string name="no_upcoming_payments">No upcoming payments</string>
+    <string name="edit_expense">Edit Expense</string>
+    <string name="add_expense">Add Expense</string>
+    <string name="update">Update</string>
+    <string name="save">Save</string>
+    <string name="add_payment">Add Payment</string>
+    <string name="edit_payment">Edit Payment</string>
+    <string name="analytics">Analytics</string>
+    <string name="total_spent">Total Spent</string>
+    <string name="avg_per_day">Avg. per day</string>
+    <string name="daily_expenses">Daily Expenses</string>
+    <string name="by_category">By Category</string>
+    <string name="expenses">Expenses</string>
+    <string name="no_expenses_yet">No expenses yet</string>
+    <string name="home">Home</string>
+    <string name="today_s_expenses">Today\'s Expenses</string>
+    <string name="upcoming_payments">Upcoming Payments</string>
+    <string name="take_control">Take Control</string>
+    <string name="track_your_daily_expenses_and_prevent_going_into_the_red_we_help_you_stay_within_your_safe_limit">Track your daily expenses and prevent going into the red. We help you stay within your safe limit.</string>
+    <string name="next">Next</string>
+    <string name="smart_reserves">Smart Reserves</string>
+    <string name="we_automatically_subtract_upcoming_payments_and_your_minimum_reserve_from_your_balance_what_s_left_is_your_safe_daily_limit">We automatically subtract upcoming payments and your minimum reserve from your balance. What\'s left is your safe daily limit.</string>
+    <string name="balance_payments_reserve_safe_limit">Balance - Payments - Reserve = Safe Limit</string>
+    <string name="get_started">Get Started</string>
+    <string name="description">Description</string>
+    <string name="no_description_provided">No description provided</string>
+    <string name="delete_payment">Delete Payment</string>
+    <string name="no_payments_yet">No payments yet</string>
+    <string name="payments">Payments</string>
+    <string name="initializing">Initializing...</string>
+    <string name="rate_app">Rate App</string>
+    <string name="save_settings">Save Settings</string>
+    <string name="ok">OK</string>
+    <string name="next_income_date">Next Income Date</string>
+    <string name="current_balance">Current Balance</string>
+    <string name="minimum_reserve">Minimum Reserve</string>
+    <string name="settings">Settings</string>
+</resources>
