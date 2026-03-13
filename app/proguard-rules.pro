@@ -29,12 +29,18 @@
     @androidx.room.* <methods>;
 }
 
+# Koin DI
+-keep class org.koin.** { *; }
+
 # Gson
 -keep class com.google.gson.** { *; }
 -keep class com.example.safelimitcalculator.data.** { *; }
 
 # ViewModel
 -keep class androidx.lifecycle.ViewModel { *; }
+
+# DataStore / Preferences
+-keep class androidx.datastore.preferences.** { *; }
 
 # Compose
 -keep class androidx.compose.** { *; }
