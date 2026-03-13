@@ -52,4 +52,8 @@
     <string name="notifications">Notifications</string>
     <string name="please_enable_notifications_in_system_settings">Please enable notifications in system settings</string>
     <string name="open">Open</string>
+    <string name="_0">0</string>
+    <string name="reset_settings">Reset Settings</string>
+    <string name="clear_all_data">Clear All Data</string>
+    <string name="app_version">App Version</string>
 </resources>

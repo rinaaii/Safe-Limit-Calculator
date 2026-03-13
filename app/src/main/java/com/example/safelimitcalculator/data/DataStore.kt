@@ -11,6 +11,6 @@ val Context.dataStore by preferencesDataStore(name = "settings")
 object SettingsKeys {
     val RESERVE = floatPreferencesKey("reserve")
     val CURRENT_BALANCE = floatPreferencesKey("current_balance")
-    val NEXT_INCOME_DATE = stringPreferencesKey("next_income_date") // yyyy-MM-dd
+    val NEXT_INCOME_DATE = stringPreferencesKey("next_income_date")
     val NOTIFICATIONS_ENABLED = booleanPreferencesKey("notifications_enabled")
 }

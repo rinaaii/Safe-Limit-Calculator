@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import android.provider.Settings
+import com.example.safelimitcalculator.R
 import kotlinx.coroutines.launch
 import org.threeten.bp.LocalDate
 
@@ -58,6 +59,44 @@ class SettingsViewModel(
     fun onDateChanged(date: LocalDate) {
         _uiState.update { it.copy(nextIncomeDate = date) }
         viewModelScope.launch { repository.updateNextIncomeDate(date) }
+    }
+
+    fun resetSettings() {
+        viewModelScope.launch {
+            repository.resetSettings()
+            val systemEnabled = areNotificationsEnabled()
+            _uiState.update {
+                it.copy(
+                    reserve = context.getString(R.string._0),
+                    currentBalance = context.getString(R.string._0),
+                    nextIncomeDate = null,
+                    notificationsEnabled = false && systemEnabled
+                )
+            }
+        }
+    }
+
+    fun clearAllData() {
+        viewModelScope.launch {
+            repository.clearAllData()
+            _uiState.update {
+                it.copy(
+                    reserve = context.getString(R.string._0),
+                    currentBalance = context.getString(R.string._0),
+                    nextIncomeDate = null,
+                    notificationsEnabled = false
+                )
+            }
+        }
+    }
+
+    fun getAppVersion(context: Context): String {
+        return try {
+            val pInfo = context.packageManager.getPackageInfo(context.packageName, 0)
+            pInfo.versionName ?: "1.0"
+        } catch (e: Exception) {
+            "1.0"
+        }
     }
 
     fun onNotificationsChanged(enabled: Boolean, onBlocked: () -> Unit) {

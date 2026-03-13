@@ -201,6 +201,34 @@ fun SettingsScreen(
                 SnackbarHost(hostState = snackbarHostState)
 
                 Button(
+                    onClick = { viewModel.resetSettings() },
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = shapes.md,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = colors.primaryAccent.copy(alpha = 0.1f),
+                        contentColor = colors.primaryAccent
+                    ),
+                    border = BorderStroke(1.dp, colors.primaryAccent)
+                ) {
+                    Text(stringResource(R.string.reset_settings), style = typography.headline2)
+                }
+
+                Button(
+                    onClick = { viewModel.clearAllData() },
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = shapes.md,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = colors.primaryAccent.copy(alpha = 0.1f),
+                        contentColor = colors.primaryAccent
+                    ),
+                    border = BorderStroke(1.dp, colors.primaryAccent)
+                ) {
+                    Text(stringResource(R.string.clear_all_data), style = typography.headline2)
+                }
+
+                Spacer(modifier = Modifier.height(dimens.sm))
+
+                Button(
                     onClick = {
                         activity?.let {
                             reviewManager.launchReview(it)
@@ -216,6 +244,19 @@ fun SettingsScreen(
                 ) {
                     Text(stringResource(R.string.rate_app), style = typography.headline2)
                 }
+
+                Text(
+                    text = "${stringResource(R.string.app_version)}: ${
+                        viewModel.getAppVersion(
+                            context
+                        )
+                    }",
+                    style = typography.body,
+                    color = colors.textSecondary,
+                    modifier = Modifier
+                        .align(Alignment.End)
+                        .padding(dimens.sm)
+                )
             }
         }
     }
