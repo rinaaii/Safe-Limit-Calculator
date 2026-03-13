@@ -2,7 +2,7 @@ package com.example.safelimitcalculator.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.safelimitcalculator.data.entity.ExpenseEntity
+import com.example.safelimitcalculator.data.model.Expense
 import com.example.safelimitcalculator.data.repository.ExpenseRepository
 import com.example.safelimitcalculator.ui.model.ExpensesUiState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,7 +31,7 @@ class ExpensesViewModel(
         }
     }
 
-    fun deleteExpense(expense: ExpenseEntity) {
+    fun deleteExpense(expense: Expense) {
         viewModelScope.launch {
             repository.delete(expense)
         }

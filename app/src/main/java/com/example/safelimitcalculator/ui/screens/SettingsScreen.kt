@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -22,6 +23,9 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
@@ -32,6 +36,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,6 +48,7 @@ import com.example.safelimitcalculator.R
 import com.example.safelimitcalculator.data.InAppReviewManager
 import com.example.safelimitcalculator.ui.theme.LocalAppTheme
 import com.example.safelimitcalculator.ui.viewmodel.SettingsViewModel
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.threeten.bp.Instant
 import org.threeten.bp.ZoneId
@@ -63,6 +69,12 @@ fun SettingsScreen(
     val context = LocalContext.current
     val activity = context as? Activity
     val reviewManager = remember { InAppReviewManager(context) }
+
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+
+    val enableMessage = stringResource(R.string.please_enable_notifications_in_system_settings)
+    val openLabel = stringResource(R.string.open)
 
     Box(
         modifier = Modifier
@@ -140,7 +152,7 @@ fun SettingsScreen(
                         },
                         dismissButton = {
                             TextButton(onClick = { showDatePicker = false }) {
-                                Text("Cancel", color = colors.textSecondary)
+                                Text(stringResource(R.string.cancel), color = colors.textSecondary)
                             }
                         }
                     ) {
@@ -156,13 +168,26 @@ fun SettingsScreen(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = "Notifications",
+                        text = stringResource(R.string.notifications),
                         style = typography.body,
                         color = colors.textPrimary
                     )
+
                     Switch(
                         checked = uiState.notificationsEnabled,
-                        onCheckedChange = { viewModel.onNotificationsChanged(it) },
+                        onCheckedChange = { enabled ->
+                            viewModel.onNotificationsChanged(enabled) {
+                                scope.launch {
+                                    val result = snackbarHostState.showSnackbar(
+                                        message = enableMessage,
+                                        actionLabel = openLabel
+                                    )
+                                    if (result == SnackbarResult.ActionPerformed) {
+                                        viewModel.openNotificationSettings()
+                                    }
+                                }
+                            }
+                        },
                         colors = SwitchDefaults.colors(
                             checkedThumbColor = colors.primaryAccent,
                             checkedTrackColor = colors.primaryAccent.copy(alpha = 0.5f),
@@ -171,6 +196,9 @@ fun SettingsScreen(
                         )
                     )
                 }
+
+                Spacer(modifier = Modifier.height(dimens.sm))
+                SnackbarHost(hostState = snackbarHostState)
 
                 Button(
                     onClick = {
@@ -187,23 +215,6 @@ fun SettingsScreen(
                     border = BorderStroke(1.dp, colors.primaryAccent)
                 ) {
                     Text(stringResource(R.string.rate_app), style = typography.headline2)
-                }
-
-                val context = LocalContext.current
-
-                Button(
-                    onClick = { viewModel.saveSettings(context) },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(56.dp),
-                    shape = shapes.md,
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = colors.primaryAccent.copy(alpha = 0.1f),
-                        contentColor = colors.primaryAccent
-                    ),
-                    border = BorderStroke(1.dp, colors.primaryAccent)
-                ) {
-                    Text(stringResource(R.string.save_settings), style = typography.headline2)
                 }
             }
         }

@@ -20,13 +20,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.safelimitcalculator.R
-import com.example.safelimitcalculator.data.entity.PaymentEntity
+import com.example.safelimitcalculator.data.model.Payment
 import com.example.safelimitcalculator.ui.theme.LocalAppTheme
 import com.example.safelimitcalculator.utils.formatDate
 
 @Composable
 fun PaymentListItem(
-    payment: PaymentEntity,
+    payment: Payment,
     onDelete: () -> Unit,
     onClick: () -> Unit
 ) {

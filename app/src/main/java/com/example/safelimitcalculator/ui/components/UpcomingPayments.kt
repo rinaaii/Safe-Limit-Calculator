@@ -10,13 +10,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import com.example.safelimitcalculator.R
 import com.example.safelimitcalculator.data.entity.PaymentEntity
+import com.example.safelimitcalculator.data.model.Payment
 import com.example.safelimitcalculator.ui.theme.LocalAppTheme
 
 @Composable
 fun UpcomingPayments(
-    payments: List<PaymentEntity>,
-    onClickPayment: (PaymentEntity) -> Unit,
-    onDeletePayment: (PaymentEntity) -> Unit,
+    payments: List<Payment>,
+    onClickPayment: (Payment) -> Unit,
+    onDeletePayment: (Payment) -> Unit,
 ) {
     val dimens = LocalAppTheme.dimens
 

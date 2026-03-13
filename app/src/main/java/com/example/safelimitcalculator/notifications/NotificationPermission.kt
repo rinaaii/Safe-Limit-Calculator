@@ -2,9 +2,11 @@ package com.example.safelimitcalculator.notifications
 
 import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 
 object NotificationPermission {
@@ -28,5 +30,9 @@ object NotificationPermission {
                 )
             }
         }
+    }
+
+    fun areNotificationsEnabled(context: Context): Boolean {
+        return NotificationManagerCompat.from(context).areNotificationsEnabled()
     }
 }

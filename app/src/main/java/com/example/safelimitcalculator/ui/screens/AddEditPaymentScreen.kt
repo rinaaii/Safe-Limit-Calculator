@@ -79,7 +79,7 @@ fun AddEditPaymentScreen(
             OutlinedTextField(
                 value = uiState.name,
                 onValueChange = viewModel::onNameChange,
-                label = { Text("Name", style = typography.body) },
+                label = { Text(stringResource(R.string.name), style = typography.body) },
                 modifier = Modifier.fillMaxWidth(),
                 shape = shapes.md,
                 colors = textFieldColors
@@ -88,7 +88,7 @@ fun AddEditPaymentScreen(
             OutlinedTextField(
                 value = uiState.amount,
                 onValueChange = viewModel::onAmountChange,
-                label = { Text("Amount", style = typography.body) },
+                label = { Text(stringResource(R.string.amount), style = typography.body) },
                 modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 shape = shapes.md,
@@ -98,7 +98,7 @@ fun AddEditPaymentScreen(
             OutlinedTextField(
                 value = uiState.description,
                 onValueChange = viewModel::onDescriptionChange,
-                label = { Text("Description", style = typography.body) },
+                label = { Text(stringResource(R.string.description), style = typography.body) },
                 modifier = Modifier.fillMaxWidth(),
                 shape = shapes.md,
                 colors = textFieldColors
@@ -111,7 +111,7 @@ fun AddEditPaymentScreen(
                 onValueChange = {},
                 readOnly = true,
                 enabled = false,
-                label = { Text("Due Date", style = typography.body) },
+                label = { Text(stringResource(R.string.due_date), style = typography.body) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable { showDatePicker = true },
@@ -140,11 +140,11 @@ fun AddEditPaymentScreen(
                                 viewModel.onDateChange(selectedDate)
                             }
                             showDatePicker = false
-                        }) { Text("OK", color = colors.primaryAccent) }
+                        }) { Text(stringResource(R.string.ok), color = colors.primaryAccent) }
                     },
                     dismissButton = {
                         TextButton(onClick = { showDatePicker = false }) {
-                            Text("Cancel", color = colors.textSecondary)
+                            Text(stringResource(R.string.cancel), color = colors.textSecondary)
                         }
                     }
                 ) {
@@ -177,7 +177,7 @@ fun AddEditPaymentScreen(
                 )
             ) {
                 Text(
-                    text = "Save",
+                    text = stringResource(R.string.save),
                     style = typography.headline2
                 )
             }

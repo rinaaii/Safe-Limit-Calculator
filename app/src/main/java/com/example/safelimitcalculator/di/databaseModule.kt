@@ -12,10 +12,11 @@ val databaseModule = module {
             androidContext(),
             AppDatabase::class.java,
             AppDatabase.DATABASE_NAME
-        ).build()
+        )
+            .fallbackToDestructiveMigration()
+            .build()
     }
 
     single { get<AppDatabase>().expenseDao() }
     single { get<AppDatabase>().paymentDao() }
-    single { get<AppDatabase>().settingsDao() }
 }

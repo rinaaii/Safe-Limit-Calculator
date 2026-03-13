@@ -3,6 +3,7 @@ package com.example.safelimitcalculator.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.safelimitcalculator.data.entity.ExpenseEntity
+import com.example.safelimitcalculator.data.model.Expense
 import com.example.safelimitcalculator.data.repository.ExpenseRepository
 import com.example.safelimitcalculator.ui.model.AnalyticsUiState
 import com.example.safelimitcalculator.utils.AnalyticsPeriod
@@ -37,7 +38,7 @@ class AnalyticsViewModel(
         }
     }
 
-    private fun calculateAnalytics(expenses: List<ExpenseEntity>) {
+    private fun calculateAnalytics(expenses: List<Expense>) {
 
         val period = _uiState.value.selectedPeriod
         val today = LocalDate.now()

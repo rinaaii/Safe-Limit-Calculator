@@ -1,95 +1,89 @@
 package com.example.safelimitcalculator.ui.viewmodel
 
 import android.content.Context
+import android.content.Intent
+import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.safelimitcalculator.data.entity.SettingsEntity
 import com.example.safelimitcalculator.data.repository.SettingsRepository
-import com.example.safelimitcalculator.notifications.FinanceNotificationManager
+import com.example.safelimitcalculator.notifications.NotificationPermission.areNotificationsEnabled
 import com.example.safelimitcalculator.ui.model.SettingsUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import org.threeten.bp.LocalDate
+import android.provider.Settings
 import kotlinx.coroutines.launch
-import org.threeten.bp.temporal.ChronoUnit
+import org.threeten.bp.LocalDate
 
 class SettingsViewModel(
-    private val repository: SettingsRepository
+    private val repository: SettingsRepository,
+    private val context: Context
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SettingsUiState())
-    val uiState: StateFlow<SettingsUiState> = _uiState
+    val uiState: StateFlow<SettingsUiState> = _uiState.asStateFlow()
 
     init {
         viewModelScope.launch {
+            val systemEnabled = areNotificationsEnabled(context)
             repository.settingsFlow.collect { settings ->
-                settings?.let {
-                    _uiState.update {
-                        it.copy(
-                            reserve = settings.reserve.toString(),
-                            currentBalance = settings.currentBalance.toString(),
-                            nextIncomeDate = settings.nextIncomeDate,
-                            notificationsEnabled = settings.notificationsEnabled,
-                            isLoading = false
-                        )
-                    }
-                } ?: _uiState.update { it.copy(isLoading = false) }
-            }
-        }
-    }
-
-    fun onBalanceChanged(newBalance: String) {
-        _uiState.update { it.copy(currentBalance = newBalance) }
-    }
-
-    fun onDateChanged(date: LocalDate) {
-        _uiState.update { it.copy(nextIncomeDate = date) }
-    }
-
-    fun onReserveChanged(newReserve: String) {
-        _uiState.update { it.copy(reserve = newReserve) }
-
-        val amount = newReserve.toFloatOrNull()
-        if (amount != null) {
-            viewModelScope.launch {
-                repository.updateReserve(amount)
-            }
-        }
-    }
-
-    fun onNotificationsChanged(enabled: Boolean) {
-        _uiState.update { it.copy(notificationsEnabled = enabled) }
-    }
-
-    fun saveSettings(context: Context) {
-        viewModelScope.launch {
-            val reserveValue = _uiState.value.reserve.toFloatOrNull() ?: 0f
-            val balanceValue = _uiState.value.currentBalance.toDoubleOrNull() ?: 0.0
-            val nextIncomeDate = _uiState.value.nextIncomeDate
-
-            val settings = SettingsEntity(
-                id = 1,
-                reserve = reserveValue,
-                notificationsEnabled = _uiState.value.notificationsEnabled,
-                currentBalance = balanceValue,
-                nextIncomeDate = nextIncomeDate
-            )
-
-            repository.saveSettings(settings)
-
-            nextIncomeDate?.let { incomeDate ->
-                val today = LocalDate.now()
-                val daysUntilIncome = ChronoUnit.DAYS.between(today, incomeDate)
-
-                if (daysUntilIncome < 2 && settings.notificationsEnabled) {
-                    FinanceNotificationManager.checkIncomeReminder(
-                        context = context,
-                        incomeAmount = balanceValue,
-                        incomeDate = incomeDate
+                _uiState.update {
+                    it.copy(
+                        reserve = settings.reserve.toString(),
+                        currentBalance = settings.currentBalance.toString(),
+                        nextIncomeDate = settings.nextIncomeDate,
+                        notificationsEnabled = settings.notificationsEnabled && systemEnabled,
+                        isLoading = false
                     )
                 }
             }
         }
+    }
+
+    fun onReserveChanged(value: String) {
+        _uiState.update { it.copy(reserve = value) }
+        value.toFloatOrNull()?.let { amount ->
+            viewModelScope.launch { repository.updateReserve(amount) }
+        }
+    }
+
+    fun onBalanceChanged(value: String) {
+        _uiState.update { it.copy(currentBalance = value) }
+        value.toFloatOrNull()?.let { amount ->
+            viewModelScope.launch { repository.updateCurrentBalance(amount) }
+        }
+    }
+
+    fun onDateChanged(date: LocalDate) {
+        _uiState.update { it.copy(nextIncomeDate = date) }
+        viewModelScope.launch { repository.updateNextIncomeDate(date) }
+    }
+
+    fun onNotificationsChanged(enabled: Boolean, onBlocked: () -> Unit) {
+        viewModelScope.launch {
+            val systemEnabled = areNotificationsEnabled()
+
+            if (enabled && !systemEnabled) {
+                _uiState.update { it.copy(notificationsEnabled = false) }
+                onBlocked()
+                return@launch
+            }
+
+            _uiState.update { it.copy(notificationsEnabled = enabled) }
+            repository.updateNotifications(enabled)
+        }
+    }
+
+    private fun areNotificationsEnabled(): Boolean {
+        return NotificationManagerCompat.from(context).areNotificationsEnabled()
+    }
+
+    fun openNotificationSettings() {
+        val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
+            putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
+        }
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        context.startActivity(intent)
     }
 }

@@ -27,7 +27,7 @@ val viewModelModule = module {
     viewModel { PaymentsViewModel(get()) }
     viewModel { PaymentDetailViewModel(get()) }
     viewModel { AddEditPaymentViewModel(get()) }
-    viewModel { SettingsViewModel(get()) }
+    viewModel { SettingsViewModel(get(), get()) }
     viewModel { HomeViewModel(get(), get(), get()) }
     viewModel { AnalyticsViewModel(get()) }
     viewModel { PreloaderViewModel(get()) }

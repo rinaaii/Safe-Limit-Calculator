@@ -19,3 +19,22 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# Room
+-keep class androidx.room.** { *; }
+-keep @androidx.room.Database class * { *; }
+-keep @androidx.room.Entity class * { *; }
+-keepclassmembers class * {
+    @androidx.room.* <fields>;
+    @androidx.room.* <methods>;
+}
+
+# Gson
+-keep class com.google.gson.** { *; }
+-keep class com.example.safelimitcalculator.data.** { *; }
+
+# ViewModel
+-keep class androidx.lifecycle.ViewModel { *; }
+
+# Compose
+-keep class androidx.compose.** { *; }

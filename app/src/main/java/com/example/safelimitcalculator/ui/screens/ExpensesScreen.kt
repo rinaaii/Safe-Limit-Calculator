@@ -107,7 +107,7 @@ fun ExpensesScreen(
         ) {
             Icon(
                 painter = painterResource(R.drawable.ic_add),
-                contentDescription = "Add Expense",
+                contentDescription = null,
                 tint = colors.background
             )
         }

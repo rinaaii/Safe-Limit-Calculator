@@ -63,7 +63,7 @@ fun AddEditExpenseScreen(
             OutlinedTextField(
                 value = uiState.amount,
                 onValueChange = viewModel::onAmountChange,
-                label = { Text("Amount", style = typography.body) },
+                label = { Text(stringResource(R.string.amount), style = typography.body) },
                 isError = uiState.error != null,
                 modifier = Modifier.fillMaxWidth(),
                 shape = shapes.md,
@@ -74,7 +74,7 @@ fun AddEditExpenseScreen(
             OutlinedTextField(
                 value = uiState.category,
                 onValueChange = viewModel::onCategoryChange,
-                label = { Text("Category", style = typography.body) },
+                label = { Text(stringResource(R.string.category), style = typography.body) },
                 modifier = Modifier.fillMaxWidth(),
                 shape = shapes.md,
                 colors = textFieldColors

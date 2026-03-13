@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.safelimitcalculator.data.entity.PaymentEntity
+import com.example.safelimitcalculator.data.model.Payment
 import com.example.safelimitcalculator.data.repository.PaymentRepository
 import com.example.safelimitcalculator.notifications.FinanceNotificationManager
 import com.example.safelimitcalculator.ui.model.AddEditPaymentUiState
@@ -77,7 +78,7 @@ class AddEditPaymentViewModel(
         }
 
         viewModelScope.launch {
-            val entity = PaymentEntity(
+            val entity = Payment(
                 id = currentId ?: 0,
                 name = state.name,
                 amount = state.amount.toDouble(),

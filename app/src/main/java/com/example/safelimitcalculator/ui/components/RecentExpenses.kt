@@ -9,14 +9,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import com.example.safelimitcalculator.R
-import com.example.safelimitcalculator.data.entity.ExpenseEntity
+import com.example.safelimitcalculator.data.model.Expense
 import com.example.safelimitcalculator.ui.theme.LocalAppTheme
 
 @Composable
 fun RecentExpenses(
-    expenses: List<ExpenseEntity>,
-    onClickExpense: (ExpenseEntity) -> Unit,
-    onDeleteExpense: (ExpenseEntity) -> Unit
+    expenses: List<Expense>,
+    onClickExpense: (Expense) -> Unit,
+    onDeleteExpense: (Expense) -> Unit
 ) {
     val dimens = LocalAppTheme.dimens
 

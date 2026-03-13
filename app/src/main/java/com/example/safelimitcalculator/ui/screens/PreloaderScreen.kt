@@ -20,6 +20,8 @@ import com.example.safelimitcalculator.ui.theme.LocalAppTheme
 import com.example.safelimitcalculator.ui.viewmodel.PreloaderViewModel
 import org.koin.androidx.compose.koinViewModel
 import androidx.compose.foundation.layout.size
+import androidx.compose.ui.res.stringResource
+import com.example.safelimitcalculator.R
 
 @Composable
 fun PreloaderScreen(
@@ -61,7 +63,7 @@ fun PreloaderScreen(
             )
 
             Text(
-                text = "Initializing...",
+                text = stringResource(R.string.initializing),
                 style = typography.body,
                 color = colors.background.copy(alpha = 0.6f)
             )

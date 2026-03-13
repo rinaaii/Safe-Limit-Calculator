@@ -17,6 +17,8 @@ import com.example.safelimitcalculator.ui.viewmodel.HomeViewModel
 import com.example.safelimitcalculator.ui.viewmodel.PaymentsViewModel
 import org.koin.androidx.compose.koinViewModel
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.res.stringResource
+import com.example.safelimitcalculator.R
 
 @Composable
 fun MainScreen() {
@@ -30,12 +32,12 @@ fun MainScreen() {
     val currentRoute = navBackStackEntry?.destination?.route
 
     val hideBottomBarScreens = listOf(
-        "preloader",
-        "onboarding_1",
-        "onboarding_2",
-        "add_edit_expense",
-        "add_edit_payment",
-        "payment_detail"
+        stringResource(R.string.preloader),
+        stringResource(R.string.onboarding_1),
+        stringResource(R.string.onboarding_2),
+        stringResource(R.string.add_edit_expense),
+        stringResource(R.string.add_edit_payment),
+        stringResource(R.string.payment_detail)
     )
 
     Scaffold(

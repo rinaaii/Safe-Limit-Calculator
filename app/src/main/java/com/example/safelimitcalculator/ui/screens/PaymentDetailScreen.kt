@@ -140,7 +140,7 @@ fun PaymentDetailScreen(
             ) {
                 Icon(
                     painter = painterResource(R.drawable.ic_edit),
-                    contentDescription = "Edit",
+                    contentDescription = null,
                     tint = colors.background
                 )
             }

@@ -5,6 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.safelimitcalculator.data.entity.ExpenseEntity
+import com.example.safelimitcalculator.data.model.Expense
 import com.example.safelimitcalculator.data.repository.ExpenseRepository
 import com.example.safelimitcalculator.notifications.FinanceNotificationManager
 import com.example.safelimitcalculator.ui.model.AddEditExpenseUiState
@@ -69,7 +70,7 @@ class AddEditExpenseViewModel(
 
         viewModelScope.launch {
 
-            val entity = ExpenseEntity(
+            val entity = Expense(
                 id = if (_uiState.value.isEditMode) expenseId else 0,
                 amount = state.amount.toDouble(),
                 category = state.category,

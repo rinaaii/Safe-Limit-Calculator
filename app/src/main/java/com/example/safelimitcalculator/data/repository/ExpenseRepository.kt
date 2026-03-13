@@ -1,7 +1,10 @@
 package com.example.safelimitcalculator.data.repository
 
 import com.example.safelimitcalculator.data.dao.ExpenseDao
-import com.example.safelimitcalculator.data.entity.ExpenseEntity
+import kotlinx.coroutines.flow.map
+import com.example.safelimitcalculator.data.entity.toDomain
+import com.example.safelimitcalculator.data.entity.toEntity
+import com.example.safelimitcalculator.data.model.Expense
 import kotlinx.coroutines.flow.Flow
 import org.threeten.bp.LocalDate
 
@@ -9,16 +12,16 @@ class ExpenseRepository(
     private val expenseDao: ExpenseDao
 ) {
 
-    val allExpenses: Flow<List<ExpenseEntity>> =
-        expenseDao.getAllExpenses()
+    val allExpenses: Flow<List<Expense>> =
+        expenseDao.getAllExpenses().map { list -> list.map { it.toDomain() } }
 
-    suspend fun getExpenseById(id: Long): ExpenseEntity? {
-        return expenseDao.getExpenseById(id)
+    suspend fun getExpenseById(id: Long): Expense? {
+        return expenseDao.getExpenseById(id)?.toDomain()
     }
 
-    suspend fun getExpensesForToday(): List<ExpenseEntity> {
+    suspend fun getExpensesForToday(): List<Expense> {
         val today = LocalDate.now()
-        return expenseDao.getExpensesBetween(today, today)
+        return expenseDao.getExpensesBetween(today, today).map { it.toDomain() }
     }
 
     suspend fun getTodayTotal(): Double {
@@ -26,20 +29,20 @@ class ExpenseRepository(
         return todayExpenses.sumOf { it.amount }
     }
 
-    suspend fun insert(expense: ExpenseEntity) {
-        expenseDao.insertExpense(expense)
+    suspend fun insert(expense: Expense) {
+        expenseDao.insertExpense(expense.toEntity())
     }
 
     suspend fun getSafeLimit(): Double {
         return 100.0
     }
 
-    suspend fun update(expense: ExpenseEntity) {
-        expenseDao.updateExpense(expense)
+    suspend fun update(expense: Expense) {
+        expenseDao.updateExpense(expense.toEntity())
     }
 
-    suspend fun delete(expense: ExpenseEntity) {
-        expenseDao.deleteExpense(expense)
+    suspend fun delete(expense: Expense) {
+        expenseDao.deleteExpense(expense.toEntity())
     }
 
     suspend fun clearAll() {
